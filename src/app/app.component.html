@@ -1,0 +1,62 @@
+<h1>yet another 4x</h1>
+<mat-button-toggle-group [(ngModel)]="context.currentPlayer">
+	<mat-button-toggle *ngFor="let player of context.players" [value]="player">{{player.token.icon}}
+		{{player.token.name}} </mat-button-toggle>
+</mat-button-toggle-group>
+<br/>
+<mat-button-toggle-group [(ngModel)]="action">
+	<mat-button-toggle value="explain">🔎</mat-button-toggle>
+	<mat-button-toggle value="explore">🗺️</mat-button-toggle>
+	<mat-button-toggle value="expand">🚩</mat-button-toggle>
+	<!--<mat-button-toggle value="exploit">👷</mat-button-toggle>-->
+	<mat-button-toggle value="extermine">💀</mat-button-toggle>
+	<mat-button-toggle value="init">👑</mat-button-toggle>
+</mat-button-toggle-group>
+<button mat-raised-button color="accent" (click)="autoplay()" >🤖  autoplay</button>
+<button mat-raised-button color="accent" (click)="next()" >🔔 next</button>
+
+<div class="card" draggable="true" (dragstart)="action='explore'"   matTooltip="discovery Deck"
+        matTooltipShowDelay="500">🗺️</div>
+<div class="row" *ngFor="let row of context.playground">
+	<div class="card" *ngFor="let card of row" (click)="process(card)" (drop)="$event.preventDefault();process(card)"
+		ondragover="event.preventDefault();"
+        [matTooltip]="card.token.explain()"
+        matTooltipShowDelay="500"
+    >
+		<div class="owner token" *ngIf="card.owner">{{card.owner.token.icon}}</div>
+		{{card.token.icon}}
+	</div>
+</div>
+<div *ngFor="let player of context.players" class="bag" (drop)="$event.preventDefault();">
+	<h2><span *ngIf="player.autoplay">🤖</span>{{player.token.displayName}}</h2>
+	<span class="token" *ngFor="let i of [].constructor(player.citizensCounter)" draggable="true" (dragstart)="context.currentPlayer=player;action='expand'">{{player.token.icon}}</span>
+	<div *ngIf="player.capital" class="card" draggable="true" (dragstart)="context.currentPlayer=player;action='init'">
+		{{context.capital.icon}}</div>
+    <hr />
+    <span *ngIf="!player.exil">⭐contender</span>
+    <span *ngIf="player.exil">🎪exiled</span>
+    <span *ngIf="player.happiness">{{context.happiness.icon}} happy</span>
+    <span *ngIf="!player.happiness">🥺angry</span> |
+    <span>{{context.food.icon}}x{{player.foodCounter}}</span>
+    <span>{{context.happiness.icon}}x{{player.happinessCounter}}</span>
+</div>
+
+<h2>Messages</h2>
+<div>
+	<div class="message" *ngFor="let msg of context.console">
+		{{msg}}
+	</div>
+</div>
+
+<h2>discovery Desk</h2>
+<div *ngFor="let token of context.discoveryDeck.elements">{{token.explain()}}</div>
+
+<h2>Inventory</h2>
+<div *ngFor="let index of context.tokens.indexToValue| keyvalue">
+
+	<h3 *ngIf="index.key">{{index.key.displayName}}</h3>
+	<h3 *ngIf="!index.key" style="color:red">undefined</h3>
+	<ul>
+		<li *ngFor="let v of index.value">{{v.explain()}}</li>
+	</ul>
+</div>

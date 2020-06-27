@@ -1,0 +1,48 @@
+p {
+  font-family: Lato;
+}
+
+.row {
+  display: flex;
+}
+
+*[draggable=true] {
+   cursor: grab;
+}
+
+.card {
+  background : gray;
+  font-size: 1.5em;
+  width:1.5em;
+  height:1.5em;
+  text-align: center;
+  line-height: 1.5em;
+  border: solid 0.1em white;
+  margin: 0.1em;
+  border-radius: 0.1em;
+  user-select: none;
+  position: relative;
+}
+
+.token {
+  font-size: 18px;
+  text-shadow: 1px 1px 4px black;
+}
+
+.owner {
+  position: absolute;
+  left:0;
+  top:0.1em;
+  margin:-0.1em;
+  padding: 0;
+  height:0em;
+  width: 0em; 
+  line-height: 1em;
+  text-align: left;
+}
+
+.bag {
+  border : 0.1em dotted white;
+  min-height: 5em;
+  background: gray;
+}
